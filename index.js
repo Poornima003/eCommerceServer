@@ -4,13 +4,14 @@ const colors = require('colors')
 const morgan = require('morgan')
 const authRoutes = require('./routes/authRoute')
 const connectDB = require('./config/db')
+const cors = require('cors')
 dotenv.config()
 
 connectDB()
 
 const app = express()
 
-
+app.use(cors())
 app.use(express.json())
 app.use(morgan('dev'))
 
