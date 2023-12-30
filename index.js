@@ -6,6 +6,8 @@ const morgan = require('morgan')
 const authRoutes = require('./routes/authRoute')
 const connectDB = require('./config/db')
 const cors = require('cors')
+const categoryRoutes = require('./routes/categoryRoutes')
+const productRoutes = require('./routes/productRoutes')
 dotenv.config()
 
 connectDB()
@@ -17,6 +19,10 @@ app.use(express.json())
 app.use(morgan('dev'))
 
 app.use('/api/v1/auth', authRoutes)
+app.use('/api/v1/category', categoryRoutes)
+app.use('/api/v1/product',productRoutes)
+
+
 
 app.get('/',(req,res) =>{
     res.send('<h1>Welcome to E commerce app</h1>')
