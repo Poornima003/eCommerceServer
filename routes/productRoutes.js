@@ -19,6 +19,6 @@ router.get('/get-product/:slug', getSingleProductController)
 //get photo
 router.get('/product-photo/:pid', productPhotoController)
 
-router.delete('/product/:pid', deleteProductController)
+router.delete('/delete-product/:pid', deleteProductController)
 
 module.exports = router
