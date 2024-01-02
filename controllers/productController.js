@@ -1,6 +1,7 @@
 
 const { default: slugify } = require("slugify")
 const productModel = require("../models/productModel")
+const categoryModel = require("../models/categoryModel")
 const fs = require('fs')
 const { log } = require("console")
 
@@ -230,24 +231,44 @@ exports.searchProductController = async (req, res) => {
     }
 }
 
-exports.relatedProductController = async(req,res) => {
+exports.relatedProductController = async (req, res) => {
     try {
-        const {pid,cid} =req.params
+        const { pid, cid } = req.params
         const products = await productModel.find({
-            category:cid,
-            _id:{$ne:pid}
+            category: cid,
+            _id: { $ne: pid }
         }).select("-photo").limit(3).populate("category")
         res.status(200).send({
-            success:true,
+            success: true,
             products
         })
     } catch (error) {
         console.log(error);
         res.status(400).send({
-            success:false,
-            message:'Error while getting similar products',
+            success: false,
+            message: 'Error while getting similar products',
             error
 
+        })
+    }
+}
+
+//get product by category
+exports.productCategoryController = async (req, res) => {
+    try {
+        const category = await categoryModel.findOne({ slug: req.params.slug })
+        const products = await productModel.find({ category }).populate('category')
+        res.status(200).send({
+            success: true,
+            category,
+            products
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+            success: false,
+            error,
+            message: "Error while getting products"
         })
     }
 }
