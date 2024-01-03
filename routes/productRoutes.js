@@ -1,6 +1,6 @@
 const express = require('express')
 const { requireSignIn, isAdmin } = require('../middlewares/authMiddleware')
-const { createProductController, getProductController, getSingleProductController, productPhotoController, deleteProductController, updateProductController, productFilterController, productCountController, productListController, searchProductController, relatedProductController, productCategoryController } = require('../controllers/productController')
+const { createProductController, getProductController, getSingleProductController, productPhotoController, deleteProductController, updateProductController, productFilterController, productCountController, productListController, searchProductController, relatedProductController, productCategoryController, braintreeTokenController, braintreePaymentController } = require('../controllers/productController')
 const formidable = require('express-formidable')
 
 const router = express.Router()
@@ -28,15 +28,23 @@ router.post('/product-filters', productFilterController)
 router.get('/product-count', productCountController)
 
 //product per page
-router.get('/product-list/:page',productListController)
+router.get('/product-list/:page', productListController)
 
 //search product
-router.get('/search/:keyword',searchProductController)
+router.get('/search/:keyword', searchProductController)
 
 //similar product
 router.get('/related-product/:pid/:cid', relatedProductController)
 
 //category wise product
 router.get('/product-category/:slug', productCategoryController)
+
+//payments routes
+//token
+router.get('/braintree/token', braintreeTokenController)
+
+//payments
+router.post('/braintree/payment', requireSignIn, braintreePaymentController)
+
 
 module.exports = router
